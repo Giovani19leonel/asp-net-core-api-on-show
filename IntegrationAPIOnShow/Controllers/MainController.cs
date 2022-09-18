@@ -19,9 +19,9 @@ namespace IntegrationAPIOnShow.Controllers
         [HttpGet("carousel")]
         public async Task<IActionResult> GetCarousel() =>
             await _mainServices.GetCarousel();
-        [HttpGet("search")]
-        public async Task<IActionResult> GetSearch([FromBody] GetSearchRequest request) =>
-            await _mainServices.Search(request);
+        [HttpPost("search")]
+        public async Task<IActionResult> PostSearch([FromBody] GetSearchRequest request) =>
+            await _mainServices.PostSearch(request);
         [HttpGet("populares")]
         public async Task<IActionResult> GetPopulares() =>
             await _mainServices.GetPopulares();
@@ -31,5 +31,14 @@ namespace IntegrationAPIOnShow.Controllers
         [HttpGet("filmes/last")]
         public async Task<IActionResult> GetLastFilmes() =>
             await _mainServices.GetLastFilmes();
+        [HttpPost("filmes/genre")]
+        public async Task<IActionResult> PostFilmesGenre([FromBody] GetFilmesGenreRequest request) =>
+            await _mainServices.PostFilmesGenre(request);
+        [HttpPost("filmes")]
+        public async Task<IActionResult> PostFilme([FromBody] GetFilmesRequest request) =>
+            await _mainServices.PostFilme(request);
+        [HttpPost("filmes/carousel")]
+        public async Task<IActionResult> PostFilmesCarousel([FromBody] GetFilmesCarouselRequest request) =>
+            await _mainServices.PostFilmesCarousel(request);
     }
 }

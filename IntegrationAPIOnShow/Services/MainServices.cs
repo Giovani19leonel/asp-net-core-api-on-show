@@ -28,8 +28,7 @@ namespace IntegrationAPIOnShow.Services
 
             return SucessResponse(response);
         }
-
-        public async Task<IActionResult> Search(GetSearchRequest request)
+        public async Task<IActionResult> PostSearch(GetSearchRequest request)
         {
             var filmes = await _onShowContext.Filmes.Where(v => v.Titulo.Contains(request.Message)).ToListAsync();
             var response = new List<GetSearchResponse>();
@@ -39,7 +38,6 @@ namespace IntegrationAPIOnShow.Services
 
             return SucessResponse(response);
         }
-
         public async Task<IActionResult> GetPopulares()
         {
             var filmes = await _onShowContext.Populares.ToListAsync();
@@ -50,7 +48,6 @@ namespace IntegrationAPIOnShow.Services
 
             return SucessResponse(response);
         }
-
         public async Task<IActionResult> GetSeries()
         {
             var series = await _onShowContext.Series.ToListAsync();
@@ -61,7 +58,6 @@ namespace IntegrationAPIOnShow.Services
 
             return SucessResponse(response);
         }
-
         public async Task<IActionResult> GetSeriesEp(GetSeriesEpRequest request)
         {
             var episodios = await _onShowContext.SeriesEp.Where(x => x.SeriesId.Equals(request.IdSerie)).ToListAsync();
@@ -72,7 +68,6 @@ namespace IntegrationAPIOnShow.Services
 
             return SucessResponse(response);
         }
-    
         public async Task<IActionResult> GetLastFilmes()
         {
             var lastFilmes = _onShowContext.Filmes.OrderByDescending(x => x.Id).Take(18);
@@ -85,6 +80,31 @@ namespace IntegrationAPIOnShow.Services
                 lstFilmes.Add(filme);
 
             return SucessResponse(lstFilmes);
+        }
+        public async Task<IActionResult> PostFilmesGenre(GetFilmesGenreRequest request)
+        {
+            var filmes = await _onShowContext.Filmes.Where(x => x.Genero.Contains(request.Genero)).ToListAsync();
+
+            List<GetFilmesGenreResponse> lstResp = new();
+
+            foreach (var filme in filmes)
+                lstResp.Add(filme);
+
+            return SucessResponse(lstResp);
+        }
+        public async Task<IActionResult> PostFilme(GetFilmesRequest request)
+        {
+            var filme = await _onShowContext.Filmes.Where(x => x.Titulo.Equals(request.Titulo)).FirstOrDefaultAsync();
+            if (filme == null)
+                return ErrorResponse("Esse filme não existe na base de dados!");
+            return SucessResponse(filme);
+        }
+        public async Task<IActionResult> PostFilmesCarousel(GetFilmesCarouselRequest request)
+        {
+            var filme = await _onShowContext.Carrossel.Where(x => x.Catalogo.Equals(request.Catalogo)).FirstOrDefaultAsync();
+            if (filme == null)
+                return ErrorResponse("Esse filme não existe na base de dados!");
+            return SucessResponse(filme);
         }
     }
 }
